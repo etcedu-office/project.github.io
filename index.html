@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ECTE Project Management System</title>
+<style>
+:root{--p:#6d1b45;--pd:#4d1231;--pl:#f7eaf1;--bg:#f5f7fb;--card:#fff;--tx:#1f2937;--mut:#667085;--bd:#e5e7eb;--ok:#13734e;--warn:#9a6a00;--bad:#a22c24;--info:#2558ad;--r:16px;--sh:0 8px 30px rgba(16,24,40,.06)}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Thai","Sarabun",Arial,sans-serif;background:var(--bg);color:var(--tx)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}.login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top left,#6d1b4520,transparent 35%),var(--bg)}
+.login-card{width:min(440px,100%);background:#fff;padding:36px;border-radius:24px;box-shadow:0 20px 60px #00000018}.brand{display:flex;gap:14px;align-items:center;margin-bottom:28px}.logo{width:54px;height:54px;border-radius:15px;background:var(--p);color:#fff;display:grid;place-items:center;font-weight:900}.brand b{display:block;font-size:16px}.brand small{color:var(--mut)}h1,h2,h3{margin-top:0}.muted{color:var(--mut);font-size:13px}.fg{margin:0 0 15px}.label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.input,.select,.textarea{width:100%;padding:11px 13px;border:1px solid var(--bd);border-radius:11px;background:#fff;outline:0}.input:focus,.select:focus,.textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px #6d1b4512}.textarea{min-height:100px;resize:vertical}.btn{border:0;border-radius:11px;padding:10px 15px;font-weight:750}.primary{background:var(--p);color:#fff}.primary:hover{background:var(--pd)}.secondary{background:#f1f3f5}.danger{background:var(--bad);color:#fff}.outline{background:#fff;border:1px solid var(--bd)}
+.app{display:none;min-height:100vh}.app.on{display:flex}.side{width:255px;position:fixed;inset:0 auto 0 0;background:#fff;border-right:1px solid var(--bd);padding:22px 16px;z-index:30}.side-brand{display:flex;gap:10px;align-items:center;padding:5px 7px 24px}.side-logo{width:43px;height:43px;border-radius:12px;background:var(--p);color:#fff;display:grid;place-items:center;font-weight:900}.side-brand b{font-size:12px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;text-align:left;padding:11px 13px;border-radius:11px;color:var(--mut);font-weight:650}.nav button.active,.nav button:hover{background:var(--pl);color:var(--p)}.side-bottom{position:absolute;bottom:18px;left:16px;right:16px}
+.main{margin-left:255px;width:calc(100% - 255px);padding:26px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin-bottom:4px;font-size:27px}.user{display:flex;gap:10px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;background:var(--pl);color:var(--p);display:grid;place-items:center;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:18px}.stat{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:17px;box-shadow:var(--sh)}.stat small{color:var(--mut)}.stat strong{display:block;font-size:25px;margin-top:6px}.card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:18px}.card-head{padding:17px 19px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;gap:10px;align-items:center}.toolbar{display:flex;gap:9px;flex:1}.toolbar .input{max-width:380px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1000px}th,td{padding:13px 16px;border-bottom:1px solid #f0f1f3;text-align:left;font-size:13px}th{background:#fafbfc;color:var(--mut);font-size:12px}tbody tr:hover{background:#fcfcfd}.pname{font-weight:750}.desc{color:var(--mut);font-size:12px;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}.planning{background:#fff5d8;color:var(--warn)}.progress{background:#e7efff;color:var(--info)}.completed{background:#e3f6ed;color:var(--ok)}.cancelled{background:#fde8e7;color:var(--bad)}.actions{display:flex;gap:5px}.icon{border:0;background:#f3f4f6;width:32px;height:32px;border-radius:8px}.empty{padding:35px;text-align:center;color:var(--mut)}
+.page{display:none}.page.active{display:block}.modal{position:fixed;inset:0;background:#0f172a88;display:none;place-items:center;padding:18px;z-index:80}.modal.on{display:grid}.modal-box{background:#fff;border-radius:20px;width:min(760px,100%);max-height:92vh;overflow:auto}.modal-head,.modal-foot{padding:17px 21px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.modal-foot{border-top:1px solid var(--bd);border-bottom:0;justify-content:flex-end;gap:8px}.modal-body{padding:21px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}.full{grid-column:1/-1}.close{border:0;background:#f3f4f6;border-radius:50%;width:34px;height:34px}
+.toast{position:fixed;right:20px;bottom:20px;color:#fff;background:#1f2937;padding:12px 16px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.25s;z-index:100}.toast.on{opacity:1;transform:none}.toast.ok{background:var(--ok)}.toast.bad{background:var(--bad)}
+.mobilebar{display:none}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.bars{display:grid;gap:10px}.barrow{display:grid;grid-template-columns:110px 1fr 45px;align-items:center;gap:8px;font-size:12px}.bar{height:10px;background:#eee;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--p)}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.side{display:none}.main{margin:0;width:100%;padding:16px}.mobilebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.top{margin-bottom:16px}.top .user{display:none}.stats{grid-template-columns:1fr 1fr}.toolbar{flex-direction:column}.toolbar .input{max-width:none}.card-head{align-items:stretch;flex-direction:column}.grid2,.chart-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+@media(max-width:480px){.stats{grid-template-columns:1fr}.login-card{padding:25px}}
+</style>
+</head>
+<body>
+<section id="login" class="login">
+  <form id="loginForm" class="login-card">
+    <div class="brand"><div class="logo">TE</div><div><b>ECTE Project Management</b><small>ภาควิชาเทคโนโลยีและสื่อสารการศึกษา<br>คณะศึกษาศาสตร์ มหาวิทยาลัยมหาสารคาม</small></div></div>
+    <h1>เข้าสู่ระบบ</h1><p class="muted">ระบบบริหารโครงการ กิจกรรม งบประมาณ และรายงาน</p>
+    <div class="fg"><label class="label">Username</label><input id="username" class="input" autocomplete="username" required></div>
+    <div class="fg"><label class="label">Password</label><input id="password" type="password" class="input" autocomplete="current-password" required></div>
+    <button class="btn primary" style="width:100%">เข้าสู่ระบบ</button>
+  </form>
+</section>
+
+<section id="app" class="app">
+<aside class="side">
+  <div class="side-brand"><div class="side-logo">TE</div><div><b>ECTE</b><br><span class="muted">Project Management</span></div></div>
+  <nav class="nav">
+    <button data-page="dashboard" class="active">📊 Dashboard</button>
+    <button data-page="projects">📁 โครงการ</button>
+    <button data-page="activities">🗓️ กิจกรรม</button>
+    <button data-page="budgets">💰 งบประมาณ</button>
+    <button data-page="reports">📈 รายงาน</button>
+    <button data-page="audit">🧾 Audit Log</button>
+  </nav>
+  <div class="side-bottom"><button id="logoutBtn" class="btn secondary" style="width:100%">🚪 ออกจากระบบ</button></div>
+</aside>
+
+<main class="main">
+  <div class="mobilebar"><b>ECTE Project Management</b><button id="mobileLogout" class="btn secondary">ออก</button></div>
+  <div class="top"><div><h1 id="title">Dashboard</h1><div id="subtitle" class="muted">ภาพรวมการดำเนินงานของภาควิชา</div></div><div class="user"><span id="userName"></span><span id="avatar" class="avatar">A</span></div></div>
+
+  <section id="dashboard" class="page active">
+    <div class="stats">
+      <div class="stat"><small>โครงการทั้งหมด</small><strong id="sTotal">0</strong></div>
+      <div class="stat"><small>กำลังดำเนินการ</small><strong id="sProgress">0</strong></div>
+      <div class="stat"><small>เสร็จสิ้น</small><strong id="sDone">0</strong></div>
+      <div class="stat"><small>กิจกรรม</small><strong id="sActivities">0</strong></div>
+      <div class="stat"><small>งบประมาณรวม</small><strong id="sBudget">฿0</strong></div>
+    </div>
+    <div class="chart-grid">
+      <div class="card"><div class="card-head"><b>สถานะโครงการ</b></div><div class="modal-body"><div id="statusBars" class="bars"></div></div></div>
+      <div class="card"><div class="card-head"><b>โครงการล่าสุด</b></div><div id="recentProjects" class="modal-body"></div></div>
+    </div>
+  </section>
+
+  <section id="projects" class="page">
+    <div class="card">
+      <div class="card-head"><div class="toolbar"><input id="projectSearch" class="input" placeholder="🔎 ค้นหาโครงการ / ผู้รับผิดชอบ"><select id="projectStatus" class="select"><option value="">ทุกสถานะ</option><option>Planning</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select></div><button id="addProject" class="btn primary">+ เพิ่มโครงการ</button></div>
+      <div class="table-wrap"><table><thead><tr><th>โครงการ</th><th>ช่วงเวลา</th><th>สถานะ</th><th>งบประมาณ</th><th>ผู้รับผิดชอบ</th><th>จัดการ</th></tr></thead><tbody id="projectRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="activities" class="page">
+    <div class="card">
+      <div class="card-head"><div><b>กิจกรรม / งานย่อย</b><div class="muted">ติดตามกิจกรรมภายใต้โครงการ</div></div><button id="addActivity" class="btn primary">+ เพิ่มกิจกรรม</button></div>
+      <div class="table-wrap"><table><thead><tr><th>กิจกรรม</th><th>โครงการ</th><th>วันที่</th><th>สถานะ</th><th>ผู้รับผิดชอบ</th><th>จัดการ</th></tr></thead><tbody id="activityRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="budgets" class="page">
+    <div class="card"><div class="card-head"><b>ภาพรวมงบประมาณ</b></div><div class="modal-body"><div class="stats"><div class="stat"><small>งบประมาณโครงการ</small><strong id="bPlan">฿0</strong></div><div class="stat"><small>ใช้จ่ายแล้ว</small><strong id="bActual">฿0</strong></div><div class="stat"><small>คงเหลือ</small><strong id="bRemain">฿0</strong></div></div><div class="muted">หมายเหตุ: การบันทึกค่าใช้จ่ายจริงแบบรายการย่อยสามารถเพิ่มผ่านโมดูล Budget Transactions ในเฟสต่อยอดได้</div></div></div>
+  </section>
+
+  <section id="reports" class="page">
+    <div class="card"><div class="card-head"><b>รายงาน</b><button id="exportCsv" class="btn primary">ส่งออก CSV</button></div><div class="modal-body"><p>รายงานปัจจุบัน: รายการโครงการทั้งหมดตามตัวกรองที่ใช้งาน</p><div id="reportSummary" class="muted"></div></div></div>
+  </section>
+
+  <section id="audit" class="page">
+    <div class="card"><div class="card-head"><b>Audit Log</b></div><div class="table-wrap"><table><thead><tr><th>เวลา</th><th>ผู้ใช้</th><th>Action</th><th>Entity</th><th>รายละเอียด</th></tr></thead><tbody id="auditRows"></tbody></table></div></div>
+  </section>
+</main>
+</section>
+
+<div id="projectModal" class="modal"><form id="projectForm" class="modal-box">
+  <div class="modal-head"><h2 id="projectModalTitle">เพิ่มโครงการ</h2><button type="button" class="close" data-close="projectModal">×</button></div>
+  <div class="modal-body"><input id="pId" type="hidden"><div class="grid2">
+    <div class="fg full"><label class="label">ชื่อโครงการ *</label><input id="pName" class="input" required></div>
+    <div class="fg full"><label class="label">รายละเอียด</label><textarea id="pDesc" class="textarea"></textarea></div>
+    <div class="fg"><label class="label">วันเริ่ม *</label><input id="pStart" type="date" class="input" required></div>
+    <div class="fg"><label class="label">วันสิ้นสุด *</label><input id="pEnd" type="date" class="input" required></div>
+    <div class="fg"><label class="label">สถานะ</label><select id="pStatus" class="select"><option>Planning</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select></div>
+    <div class="fg"><label class="label">งบประมาณ</label><input id="pBudget" type="number" min="0" step="0.01" class="input"></div>
+    <div class="fg full"><label class="label">ผู้รับผิดชอบ</label><input id="pManager" class="input"></div>
+  </div></div>
+  <div class="modal-foot"><button type="button" class="btn secondary" data-close="projectModal">ยกเลิก</button><button class="btn primary">บันทึก</button></div>
+</form></div>
+
+<div id="activityModal" class="modal"><form id="activityForm" class="modal-box">
+  <div class="modal-head"><h2 id="activityModalTitle">เพิ่มกิจกรรม</h2><button type="button" class="close" data-close="activityModal">×</button></div>
+  <div class="modal-body"><input id="aId" type="hidden"><div class="grid2">
+    <div class="fg full"><label class="label">ชื่อกิจกรรม *</label><input id="aName" class="input" required></div>
+    <div class="fg full"><label class="label">โครงการ *</label><select id="aProject" class="select" required></select></div>
+    <div class="fg"><label class="label">วันเริ่ม *</label><input id="aStart" type="date" class="input" required></div>
+    <div class="fg"><label class="label">วันสิ้นสุด *</label><input id="aEnd" type="date" class="input" required></div>
+    <div class="fg"><label class="label">สถานะ</label><select id="aStatus" class="select"><option>Planning</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select></div>
+    <div class="fg"><label class="label">ผู้รับผิดชอบ</label><input id="aManager" class="input"></div>
+  </div></div>
+  <div class="modal-foot"><button type="button" class="btn secondary" data-close="activityModal">ยกเลิก</button><button class="btn primary">บันทึก</button></div>
+</form></div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbxon9IGsFNUTnzkTFTfLgy6p26lKT2pop3gAL4xymbWJobPKNWz7ai0x9a8iBSV-B7d/exec";
+const state={token:localStorage.getItem("ecte_token")||"",user:JSON.parse(localStorage.getItem("ecte_user")||"null"),projects:[],activities:[],audit:[]};
+
+async function sha256(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+async function api(method="GET",payload={}){
+  if(API_URL.startsWith("YOUR_"))throw Error("กรุณาตั้งค่า API_URL ใน index.html");
+  if(method==="GET"){const u=API_URL+"?action="+encodeURIComponent(payload.action||"bootstrap")+"&token="+encodeURIComponent(state.token);return (await fetch(u)).json()}
+  return (await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({...payload,_method:method,token:state.token})})).json()
+}
+function toast(m,kind=""){const x=document.getElementById("toast");x.textContent=m;x.className="toast on "+kind;setTimeout(()=>x.className="toast",2800)}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function money(v){return new Intl.NumberFormat("th-TH",{style:"currency",currency:"THB",maximumFractionDigits:0}).format(Number(v||0))}
+function date(v){if(!v)return "-";const d=new Date(v);return isNaN(d)?"-":new Intl.DateTimeFormat("th-TH",{year:"numeric",month:"short",day:"numeric"}).format(d)}
+function dateInput(v){if(!v)return "";return /^\d{4}-\d{2}-\d{2}$/.test(v)?v:new Date(v).toISOString().slice(0,10)}
+function badge(s){const m={Planning:["วางแผน","planning"],"In Progress":["กำลังดำเนินการ","progress"],Completed:["เสร็จสิ้น","completed"],Cancelled:["ยกเลิก","cancelled"]};const a=m[s]||[s||"-","planning"];return `<span class="badge ${a[1]}">${a[0]}</span>`}
+
+async function bootstrap(){
+  const r=await api("GET",{action:"bootstrap"});if(!r.success)throw Error(r.message||"โหลดข้อมูลไม่สำเร็จ");
+  state.projects=r.data.projects||[];state.activities=r.data.activities||[];state.audit=r.data.audit||[];
+  renderAll()
+}
+function renderAll(){renderStats();renderProjects();renderActivities();renderAudit();renderDashboard();renderProjectOptions();document.getElementById("reportSummary").textContent=`มี ${state.projects.length} โครงการ และ ${state.activities.length} กิจกรรม`}
+function renderStats(){
+  const total=state.projects.length, prog=state.projects.filter(x=>x.Status==="In Progress").length, done=state.projects.filter(x=>x.Status==="Completed").length;
+  document.getElementById("sTotal").textContent=total;document.getElementById("sProgress").textContent=prog;document.getElementById("sDone").textContent=done;document.getElementById("sActivities").textContent=state.activities.length;
+  const b=state.projects.reduce((a,x)=>a+Number(x.Budget||0),0);document.getElementById("sBudget").textContent=money(b);document.getElementById("bPlan").textContent=money(b);document.getElementById("bActual").textContent=money(0);document.getElementById("bRemain").textContent=money(b)
+}
+function renderDashboard(){
+  const statuses=["Planning","In Progress","Completed","Cancelled"], total=Math.max(state.projects.length,1);
+  document.getElementById("statusBars").innerHTML=statuses.map(s=>{const n=state.projects.filter(x=>x.Status===s).length;return `<div class="barrow"><span>${s}</span><div class="bar"><i style="width:${n/total*100}%"></i></div><b>${n}</b></div>`}).join("");
+  const recent=[...state.projects].slice(-5).reverse();document.getElementById("recentProjects").innerHTML=recent.length?recent.map(x=>`<div style="padding:9px 0;border-bottom:1px solid #eee"><b>${esc(x.ProjectName)}</b><div class="muted">${date(x.StartDate)} – ${date(x.EndDate)} · ${badge(x.Status)}</div></div>`).join(""):`<div class="empty">ยังไม่มีโครงการ</div>`
+}
+function renderProjects(){
+  const q=document.getElementById("projectSearch").value.toLowerCase(), f=document.getElementById("projectStatus").value;
+  const list=state.projects.filter(x=>(!f||x.Status===f)&&(!q||`${x.ProjectName} ${x.Manager} ${x.Description}`.toLowerCase().includes(q)));
+  document.getElementById("projectRows").innerHTML=list.length?list.map(x=>`<tr><td><div class="pname">${esc(x.ProjectName)}</div><div class="desc">${esc(x.Description)}</div></td><td>${date(x.StartDate)}<br>${date(x.EndDate)}</td><td>${badge(x.Status)}</td><td>${money(x.Budget)}</td><td>${esc(x.Manager||"-")}</td><td><div class="actions"><button class="icon" onclick="editProject('${esc(x.ID)}')">✏️</button><button class="icon" onclick="removeProject('${esc(x.ID)}')">🗑️</button></div></td></tr>`).join(""):`<tr><td colspan="6" class="empty">ไม่พบข้อมูล</td></tr>`
+}
+function renderProjectOptions(){document.getElementById("aProject").innerHTML=state.projects.map(x=>`<option value="${esc(x.ID)}">${esc(x.ProjectName)}</option>`).join("")}
+function renderActivities(){
+  document.getElementById("activityRows").innerHTML=state.activities.length?state.activities.map(x=>{const p=state.projects.find(y=>y.ID===x.ProjectID);return `<tr><td class="pname">${esc(x.ActivityName)}</td><td>${esc(p?.ProjectName||"-")}</td><td>${date(x.StartDate)} – ${date(x.EndDate)}</td><td>${badge(x.Status)}</td><td>${esc(x.Manager||"-")}</td><td><div class="actions"><button class="icon" onclick="editActivity('${esc(x.ID)}')">✏️</button><button class="icon" onclick="removeActivity('${esc(x.ID)}')">🗑️</button></div></td></tr>`}).join(""):`<tr><td colspan="6" class="empty">ยังไม่มีกิจกรรม</td></tr>`
+}
+function renderAudit(){document.getElementById("auditRows").innerHTML=state.audit.length?state.audit.slice(-100).reverse().map(x=>`<tr><td>${date(x.Timestamp)}</td><td>${esc(x.Username)}</td><td>${esc(x.Action)}</td><td>${esc(x.Entity)}</td><td>${esc(x.Detail)}</td></tr>`).join(""):`<tr><td colspan="5" class="empty">ยังไม่มี Audit Log</td></tr>`}
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===id));
+  const titles={dashboard:["Dashboard","ภาพรวมการดำเนินงานของภาควิชา"],projects:["โครงการ","จัดการโครงการและกิจกรรม"],activities:["กิจกรรม","ติดตามงานย่อยภายใต้โครงการ"],budgets:["งบประมาณ","ภาพรวมงบประมาณโครงการ"],reports:["รายงาน","ส่งออกข้อมูลสำหรับงานบริหาร"],audit:["Audit Log","ประวัติการเปลี่ยนแปลงข้อมูล"]};document.getElementById("title").textContent=titles[id][0];document.getElementById("subtitle").textContent=titles[id][1]
+}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+document.getElementById("projectSearch").oninput=renderProjects;document.getElementById("projectStatus").onchange=renderProjects;
+
+function openModal(id){document.getElementById(id).classList.add("on")}function closeModal(id){document.getElementById(id).classList.remove("on")}
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+
+function resetProject(){document.getElementById("projectForm").reset();document.getElementById("pId").value="";document.getElementById("projectModalTitle").textContent="เพิ่มโครงการ"}
+document.getElementById("addProject").onclick=()=>{resetProject();openModal("projectModal")}
+function editProject(id){const x=state.projects.find(y=>y.ID===id);if(!x)return;document.getElementById("projectModalTitle").textContent="แก้ไขโครงการ";document.getElementById("pId").value=x.ID;document.getElementById("pName").value=x.ProjectName;document.getElementById("pDesc").value=x.Description||"";document.getElementById("pStart").value=dateInput(x.StartDate);document.getElementById("pEnd").value=dateInput(x.EndDate);document.getElementById("pStatus").value=x.Status;document.getElementById("pBudget").value=x.Budget||0;document.getElementById("pManager").value=x.Manager||"";openModal("projectModal")}
+document.getElementById("projectForm").onsubmit=async e=>{e.preventDefault();const id=document.getElementById("pId").value;const data={ID:id,ProjectName:document.getElementById("pName").value.trim(),Description:document.getElementById("pDesc").value.trim(),StartDate:document.getElementById("pStart").value,EndDate:document.getElementById("pEnd").value,Status:document.getElementById("pStatus").value,Budget:Number(document.getElementById("pBudget").value||0),Manager:document.getElementById("pManager").value.trim()};if(data.EndDate<data.StartDate)return toast("วันที่สิ้นสุดต้องไม่น้อยกว่าวันเริ่ม","bad");try{const r=await api(id?"PUT":"POST",{entity:"project",...data});if(!r.success)throw Error(r.message);closeModal("projectModal");await bootstrap();toast(id?"แก้ไขโครงการสำเร็จ":"เพิ่มโครงการสำเร็จ","ok")}catch(x){toast(x.message,"bad")}}
+async function removeProject(id){const x=state.projects.find(y=>y.ID===id);if(!confirm(`ลบ "${x?.ProjectName}" หรือไม่?`))return;try{const r=await api("DELETE",{entity:"project",ID:id});if(!r.success)throw Error(r.message);await bootstrap();toast("ลบโครงการสำเร็จ","ok")}catch(e){toast(e.message,"bad")}}
+
+document.getElementById("addActivity").onclick=()=>{document.getElementById("activityForm").reset();document.getElementById("aId").value="";document.getElementById("activityModalTitle").textContent="เพิ่มกิจกรรม";renderProjectOptions();openModal("activityModal")}
+function editActivity(id){const x=state.activities.find(y=>y.ID===id);if(!x)return;document.getElementById("activityModalTitle").textContent="แก้ไขกิจกรรม";document.getElementById("aId").value=x.ID;document.getElementById("aName").value=x.ActivityName;document.getElementById("aProject").value=x.ProjectID;document.getElementById("aStart").value=dateInput(x.StartDate);document.getElementById("aEnd").value=dateInput(x.EndDate);document.getElementById("aStatus").value=x.Status;document.getElementById("aManager").value=x.Manager||"";openModal("activityModal")}
+document.getElementById("activityForm").onsubmit=async e=>{e.preventDefault();const id=document.getElementById("aId").value;const data={ID:id,ActivityName:document.getElementById("aName").value.trim(),ProjectID:document.getElementById("aProject").value,StartDate:document.getElementById("aStart").value,EndDate:document.getElementById("aEnd").value,Status:document.getElementById("aStatus").value,Manager:document.getElementById("aManager").value.trim()};try{const r=await api(id?"PUT":"POST",{entity:"activity",...data});if(!r.success)throw Error(r.message);closeModal("activityModal");await bootstrap();toast(id?"แก้ไขกิจกรรมสำเร็จ":"เพิ่มกิจกรรมสำเร็จ","ok")}catch(x){toast(x.message,"bad")}}
+async function removeActivity(id){if(!confirm("ลบกิจกรรมนี้หรือไม่?"))return;try{const r=await api("DELETE",{entity:"activity",ID:id});if(!r.success)throw Error(r.message);await bootstrap();toast("ลบกิจกรรมสำเร็จ","ok")}catch(e){toast(e.message,"bad")}}
+
+document.getElementById("exportCsv").onclick=()=>{const rows=[["ID","ProjectName","Description","StartDate","EndDate","Status","Budget","Manager"],...state.projects.map(x=>[x.ID,x.ProjectName,x.Description,x.StartDate,x.EndDate,x.Status,x.Budget,x.Manager])];const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="ecte-projects.csv";a.click();URL.revokeObjectURL(a.href)}
+
+async function login(e){e.preventDefault();try{const h=await sha256(document.getElementById("password").value);const r=await api("LOGIN",{username:document.getElementById("username").value.trim(),passwordHash:h});if(!r.success)throw Error(r.message);state.token=r.token;state.user=r.user;localStorage.setItem("ecte_token",r.token);localStorage.setItem("ecte_user",JSON.stringify(r.user));enterApp();toast("เข้าสู่ระบบสำเร็จ","ok")}catch(x){toast(x.message,"bad")}}
+document.getElementById("loginForm").onsubmit=login;
+function enterApp(){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.add("on");document.getElementById("userName").textContent=state.user?.name||"Administrator";document.getElementById("avatar").textContent=(state.user?.name||"A").charAt(0);bootstrap().catch(e=>toast(e.message,"bad"))}
+async function logout(){state.token="";state.user=null;localStorage.removeItem("ecte_token");localStorage.removeItem("ecte_user");document.getElementById("app").classList.remove("on");document.getElementById("login").classList.remove("hidden")}
+document.getElementById("logoutBtn").onclick=logout;document.getElementById("mobileLogout").onclick=logout;
+if(state.token&&state.user)enterApp();
+</script>
+</body>
+</html>
